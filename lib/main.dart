@@ -1,10 +1,19 @@
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:perfume/firebase_options.dart';
+import 'package:perfume/src/components/network_helper.dart';
 import 'src/views/authentications/splash.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
+  await FlutterDownloader.initialize(debug: false, ignoreSsl: false);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
@@ -19,7 +28,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       defaultTransition: Transition.cupertino,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Enela',
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(83, 196, 146, 1),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

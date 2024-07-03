@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "127506683457",
+    "project_id": "enela-3d7a3",
+    "storage_bucket": "enela-3d7a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127506683457:android:ae4d928b6387e5b64298c0",
+        "android_client_info": {
+          "package_name": "com.enela.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6nUTW8V3XSc72Mrf26DTqibEN0YJFjAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

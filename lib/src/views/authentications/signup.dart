@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:perfume/src/components/global_variable.dart';
+import 'package:perfume/src/components/password_validator.dart';
+import 'package:perfume/src/controllers/authentication_controller.dart';
+import 'package:perfume/src/views/authentications/otp.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -112,13 +116,76 @@ class SingleChoice extends StatefulWidget {
   State<SingleChoice> createState() => _SingleChoiceState();
 }
 
-class _SingleChoiceState extends State<SingleChoice> {
+class _SingleChoiceState extends State<SingleChoice> with TickerProviderStateMixin {
   Calendar calendarView = Calendar.login;
   final _formKey = GlobalKey<FormState>();
   bool isLoginPage = true;
+  AuthenticationController authenticationController = Get.put(AuthenticationController());
   final TextEditingController controller = TextEditingController();
+  final TextEditingController password = TextEditingController();
   String initialCountry = 'ID';
+  bool showPassword = true;
   PhoneNumber number = PhoneNumber(isoCode: 'ID');
+  bool tampilsandipasswordsekarang = true;
+  bool tampilsandipasswordbaru1 = true;
+  bool tampilsandipasswordbaru2 = true;
+  bool isPasswordEightCharacters = false;
+  bool hasPasswordOneNumber = false;
+  bool hasLowerUpper = false;
+  bool hasPasswordSame = false;
+  // bool _shouldFade = false;
+
+  // late AnimationController animation;
+  // late Animation<double> _fadeInFadeOut;
+
+
+  @override
+  void initState() {
+    super.initState();
+    password.addListener((){});
+    // animation = AnimationController(vsync: this, duration: const Duration(milliseconds: 700),);
+    // _fadeInFadeOut = Tween<double>(begin: 0.0, end: 1).animate(animation);
+    // animation.addStatusListener((status){
+    //   if(status == AnimationStatus.completed){
+    //     animation.reverse();
+    //   }
+    //   else if(status == AnimationStatus.dismissed){
+    //     animation.stop();
+    //   }
+    // });
+    // animation.forward();
+  }
+
+  onPasswordChanged(String password) {
+    final numericRegex = RegExp(r'[0-9]');
+    final upperLowerRegex = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$');
+
+    setState(() {
+      isPasswordEightCharacters = false;
+      if (password.length > 7) isPasswordEightCharacters = true;
+
+      hasPasswordOneNumber = false;
+      if (numericRegex.hasMatch(password)) hasPasswordOneNumber = true;
+    
+      hasLowerUpper = false;
+      if (upperLowerRegex.hasMatch(password)) hasLowerUpper = true;
+    });
+  }
+
+  onPasswordChangeConfirm(String password1, String password2){
+    setState(() {
+      hasPasswordSame = false;
+      if (password1 == password2) hasPasswordSame = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    password.dispose();
+    controller.dispose();
+    // animation.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,57 +193,73 @@ class _SingleChoiceState extends State<SingleChoice> {
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width / 1.3,
-          child: SegmentedButton<Calendar>(
-            style: SegmentedButton.styleFrom(
-              side: const BorderSide(color: GlobalVariables.buttonColorGreen),
-              backgroundColor: Colors.white,
-              foregroundColor:  GlobalVariables.buttonColorGreen,
-              selectedForegroundColor: Colors.white,
-              selectedBackgroundColor: GlobalVariables.buttonColorGreen,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 20
+                )
+              ]
             ),
-            showSelectedIcon: false,
-            segments: const <ButtonSegment<Calendar>>[
-              ButtonSegment<Calendar>(
-                  value: Calendar.login,
-                  label: Text('Login'),
-                ),
-              ButtonSegment<Calendar>(
-                  value: Calendar.signup,
-                  label: Text('Register'),
-                ),
-            ],
-            selected: <Calendar>{calendarView},
-            onSelectionChanged: (Set<Calendar> newSelection) {
-              setState(() {
-                calendarView = newSelection.first;
-                if(calendarView == Calendar.signup){
-                  isLoginPage = false;
-                }else{
-                  isLoginPage = true;
-                }
-              });
-            },
+            child: SegmentedButton<Calendar>(
+              style: SegmentedButton.styleFrom(
+                side: const BorderSide(color: GlobalVariables.buttonColorGreen),
+                backgroundColor: Colors.white,
+                foregroundColor:  GlobalVariables.buttonColorGreen,
+                selectedForegroundColor: Colors.white,
+                selectedBackgroundColor: GlobalVariables.buttonColorGreen,
+              ),
+              showSelectedIcon: false,
+              segments: const <ButtonSegment<Calendar>>[
+                ButtonSegment<Calendar>(
+                    value: Calendar.login,
+                    label: Text('Login'),
+                  ),
+                ButtonSegment<Calendar>(
+                    value: Calendar.signup,
+                    label: Text('Register'),
+                  ),
+              ],
+              selected: <Calendar>{calendarView},
+              onSelectionChanged: (Set<Calendar> newSelection) {
+                setState(() {
+                  calendarView = newSelection.first;
+                  if(calendarView == Calendar.signup){
+                    isLoginPage = false;
+                  }else{
+                    isLoginPage = true;
+                    // setState(() {
+                    //   _shouldFade = true;
+                    //   Future.delayed(const Duration(seconds: 2), () => _shouldFade = false);
+                    // });
+                  }
+                });
+              },
+            ),
           ),
         ),
-        isLoginPage ? bodyLogin(): Text("Hello World Sign UP")
+        isLoginPage ? bodyLogin() : bodyRegister() 
       ],
     );
   }
 
-  Widget bodyLogin(){
+  Widget bodyRegister(){
     return Form(
       key: _formKey,
       child: Column(
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(30),
               boxShadow: const [
                 BoxShadow(
-                  color: Colors.black38,
+                  color: Colors.black12,
                   offset: Offset(0, 2),
                   blurRadius: 20
                 )
@@ -195,7 +278,7 @@ class _SingleChoiceState extends State<SingleChoice> {
               ),
               ignoreBlank: false,
               autoValidateMode: AutovalidateMode.disabled,
-              selectorTextStyle: TextStyle(color: Colors.black),
+              selectorTextStyle: const TextStyle(color: Colors.black),
               initialValue: number,
               spaceBetweenSelectorAndTextField: 0,
               autoFocusSearch: false,
@@ -208,6 +291,272 @@ class _SingleChoiceState extends State<SingleChoice> {
               onSaved: (PhoneNumber number) {
                 print('On Saved: $number');
               },
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 20
+                )
+              ]
+            ),
+            child: TextFormField(
+              controller: password,
+              obscureText: showPassword,
+              obscuringCharacter: '*',
+              onChanged: (text) => onPasswordChanged(text),
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                hintText: "Choose Password",
+                hintStyle: const TextStyle(color: Colors.black45),
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none
+                ),
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    child: showPassword ? const Icon(CupertinoIcons.eye_fill, color: Colors.black45, size: 22) : const Icon(CupertinoIcons.eye_slash_fill, color: Colors.black45, size: 22),
+                  ),
+                )
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            color: Colors.transparent,
+            child: Column(
+              children: [
+                const SizedBox(height: 15),
+                Roweliminatenumber(
+                isPasswordEightCharacters: isPasswordEightCharacters),
+                const SizedBox(height: 10),
+                Roweliminatelowup(hasLowerUpper: hasLowerUpper),
+                const SizedBox(height: 10),
+                Roweliminateonenum(hasPasswordOneNumber: hasPasswordOneNumber),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text("You are starting registration process as Online Customer. Please find our Privacy Policy and Terms and Conditions for Online Customers. By clicking on the buttons below, you consent to receive messages from Enela related to your registration process.", style: TextStyle(color: Colors.black45),),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: GlobalVariables.buttonColorGreen
+                ),
+                onPressed: (){
+                  Get.to(() => const OTPPage());
+                }, child: const Text("CREATE ACCOUNT", style: TextStyle(color: GlobalVariables.textColorWhite),
+                )
+              )
+            ),
+          ),
+          const Center(
+            child: Text("OR CONTINUE WITH", style: TextStyle(color: Colors.black45)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 20
+                )
+              ]
+            ),
+              child: Obx(() => ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: GlobalVariables.buttonColorWhite
+                  ),
+                  onPressed: authenticationController.isLoading.value ? (){} : (){
+                    authenticationController.signInWithGoogle();
+                  }, 
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/google.png', width: 20,),
+                      const SizedBox(width: 10),
+                      const Text("SIGN UP WITH GOOGLE", style: TextStyle(color: GlobalVariables.buttonColorBlack),
+                      ),
+                    ],
+                  )
+                ),
+              )
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget bodyLogin(){
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 20
+                )
+              ]
+            ),
+            child: InternationalPhoneNumberInput(
+              onInputChanged: (PhoneNumber number) {
+                print(number.phoneNumber);
+              },
+              onInputValidated: (bool value) {
+                print(value);
+              },
+              selectorConfig: const SelectorConfig(
+                selectorType: PhoneInputSelectorType.DIALOG,
+                useBottomSheetSafeArea: false,
+              ),
+              ignoreBlank: false,
+              autoValidateMode: AutovalidateMode.disabled,
+              selectorTextStyle: const TextStyle(color: Colors.black),
+              initialValue: number,
+              spaceBetweenSelectorAndTextField: 0,
+              autoFocusSearch: false,
+              textFieldController: controller,
+              formatInput: true,
+              inputBorder: const OutlineInputBorder(
+                borderSide: BorderSide.none
+              ),
+              keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+              onSaved: (PhoneNumber number) {
+                print('On Saved: $number');
+              },
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 20
+                )
+              ]
+            ),
+            child: TextFormField(
+              controller: password,
+              obscureText: showPassword,
+              obscuringCharacter: '*',
+              onChanged: (text) => onPasswordChanged(text),
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                hintText: "Input Password",
+                hintStyle: const TextStyle(color: Colors.black45),
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none
+                ),
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    child: showPassword ? const Icon(CupertinoIcons.eye_fill, color: Colors.black45, size: 22) : const Icon(CupertinoIcons.eye_slash_fill, color: Colors.black45, size: 22),
+                  ),
+                )
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: GlobalVariables.buttonColorGreen
+                ),
+                onPressed: (){
+                  Get.to(() => const OTPPage());
+                }, child: const Text("Login", style: TextStyle(color: GlobalVariables.textColorWhite),
+                )
+              )
+            ),
+          ),
+          const Center(
+            child: Text("OR CONTINUE WITH", style: TextStyle(color: Colors.black45)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 20
+                )
+              ]
+            ),
+              child: Obx(() => ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: GlobalVariables.buttonColorWhite
+                  ),
+                  onPressed: authenticationController.isLoading.value ? (){} : (){
+                    authenticationController.signInWithGoogle();
+                  }, 
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/google.png', width: 20,),
+                      const SizedBox(width: 10),
+                      const Text("SIGN IN WITH GOOGLE", style: TextStyle(color: GlobalVariables.buttonColorBlack),
+                      ),
+                    ],
+                  )
+                ),
+              )
             ),
           ),
         ],

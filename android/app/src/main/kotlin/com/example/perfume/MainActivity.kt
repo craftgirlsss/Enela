@@ -1,4 +1,4 @@
-package com.example.perfume
+package com.enela.app
 
 import io.flutter.embedding.android.FlutterActivity
 
