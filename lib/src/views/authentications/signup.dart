@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:perfume/src/components/global_variable.dart';
@@ -123,6 +124,7 @@ class _SingleChoiceState extends State<SingleChoice> with TickerProviderStateMix
   AuthenticationController authenticationController = Get.put(AuthenticationController());
   final TextEditingController controller = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final TextEditingController emailForgot = TextEditingController();
   String initialCountry = 'ID';
   bool showPassword = true;
   PhoneNumber number = PhoneNumber(isoCode: 'ID');
@@ -183,6 +185,7 @@ class _SingleChoiceState extends State<SingleChoice> with TickerProviderStateMix
   void dispose() {
     password.dispose();
     controller.dispose();
+    emailForgot.dispose();
     // animation.dispose();
     super.dispose();
   }
@@ -357,8 +360,18 @@ class _SingleChoiceState extends State<SingleChoice> with TickerProviderStateMix
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-            child: SizedBox(
+            child: Container(
               width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 20
+                )
+              ]
+            ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
@@ -463,7 +476,7 @@ class _SingleChoiceState extends State<SingleChoice> with TickerProviderStateMix
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+            margin: const EdgeInsets.only(left: 15, right: 15, bottom: 0),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(30),
@@ -504,10 +517,92 @@ class _SingleChoiceState extends State<SingleChoice> with TickerProviderStateMix
               ),
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                style: const ButtonStyle(
+                  padding: WidgetStatePropertyAll(EdgeInsets.only(right: 20, bottom: 0))
+                ),
+                onPressed: (){
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                        left: 20,
+                        right: 20,
+                        top: 20
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    width: 70,
+                                    height: 5,
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black
+                                    ),
+                                  )
+                                ),
+                                const Text('Oh no!,\ni\'m forgot password', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, fontFamily: "SF-PRO-Bold")),
+                                const Text('Please type your email address where registered in this platform', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          TextField(
+                            controller: emailForgot,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(top: 15),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black
+                                )
+                              ),
+                              hintText: 'Email Address',
+                              prefixIcon: const Icon(Icons.email),
+                              suffixIcon: InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                onTap: (){},
+                                child: Icon(Icons.send, color: Colors.blue.shade600,),
+                              )
+                            ),
+                            autofocus: false,
+                            ),
+                            const SizedBox(height: 30),
+                        ],
+                      ),
+                    )
+                  );
+                }, 
+                child: const Text("Forgot Password?", style: TextStyle(color: GlobalVariables.buttonColorGreen),))
+            ],
+          ),
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-            child: SizedBox(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 7, bottom: 10),
+            child: Container(
               width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    offset: Offset(0, 2),
+                    blurRadius: 20
+                  )
+                ]
+              ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
@@ -528,16 +623,16 @@ class _SingleChoiceState extends State<SingleChoice> with TickerProviderStateMix
             child: Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  offset: Offset(0, 2),
-                  blurRadius: 20
-                )
-              ]
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    offset: Offset(0, 2),
+                    blurRadius: 20
+                  )
+                ]
+              ),
               child: Obx(() => ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,

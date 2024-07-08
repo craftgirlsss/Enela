@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/otp_field_style.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:get/get.dart';
 import 'package:perfume/src/components/global_variable.dart';
+import 'package:perfume/src/views/dashboards/mainpage.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:quiver/async.dart';
 
 class OTPPage extends StatefulWidget {
   final String? phone;
@@ -16,11 +16,11 @@ class OTPPage extends StatefulWidget {
 }
 
 class _OTPPageState extends State<OTPPage> {
-  OtpFieldController otpController = OtpFieldController();
-  String? otpResult;
-  int secondsRemaining = 60;
-  bool enableResend = false;
-  Timer? timer;
+  TextEditingController otpController = TextEditingController();
+  StreamController<ErrorAnimationType>? errorController;
+  bool hasError = false;
+  String currentText = "";
+  final formKey = GlobalKey<FormState>();
 
   formattedTime({required int timeInSecond}) {
     int sec = timeInSecond % 60;
@@ -32,19 +32,16 @@ class _OTPPageState extends State<OTPPage> {
 
   @override
   initState() {
+    errorController = StreamController<ErrorAnimationType>();
     super.initState();
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (secondsRemaining != 0) {
-        setState(() {
-          secondsRemaining--;
-        });
-      } else {
-        setState(() {
-          timer?.cancel();
-          enableResend = true;
-        });
-      }
-    });
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    errorController?.close();
+    // otpController.dispose();
+    super.dispose();
   }
 
   @override
@@ -85,6 +82,15 @@ class _OTPPageState extends State<OTPPage> {
                             ),
                           ),
                         ),
+                        Positioned(
+                          left: 10,
+                          top: 30,
+                          child: IconButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            }, 
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: GlobalVariables.buttonColorWhite, size: 22,))
+                        ),
                         const Positioned(
                           bottom: 50,
                           left: 0,
@@ -101,10 +107,6 @@ class _OTPPageState extends State<OTPPage> {
                         )
                       ],
                     ),
-                  //   const Padding(
-                  //   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                  //   child: Text("VERIFICATION CODE", style: TextStyle()),
-                  // ),
                   const SizedBox(height: 15),
                   // Center(child: Image.asset('assets/images/otp_image.png')),
                   const Padding(
@@ -116,44 +118,87 @@ class _OTPPageState extends State<OTPPage> {
                     child: Text("We have sent a verification code to the WhatsApp number ${widget.phone ?? 'Unknown Number'}.", style: const TextStyle(fontSize: 15),),
                   ), 
                   const SizedBox(height: 20),
-                  Center(
-                    child: OTPTextField(
-                      otpFieldStyle: OtpFieldStyle(
-                        backgroundColor: Colors.transparent,
-                        borderColor: Colors.black.withOpacity(0.2),
-                        enabledBorderColor: Colors.black.withOpacity(0.2),
+                  Form(
+                    key: formKey,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 30,
                       ),
-                      controller: otpController,
-                      keyboardType: TextInputType.number,
-                      length: 4,
-                      width: MediaQuery.of(context).size.width,
-                      textFieldAlignment: MainAxisAlignment.spaceEvenly,
-                      fieldWidth: 45,
-                      fieldStyle: FieldStyle.box,
-                      outlineBorderRadius: 7,
-                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                      onChanged: (pin) {
-                      },
-                      onCompleted: (pin) {
-                        // otpController.clear();
-                        setState(() {
-                          otpResult = pin;
-                        });
-                      },
+                      child: PinCodeTextField(
+                        autoDisposeControllers: true,
+                        appContext: context,
+                        animationCurve: Curves.bounceInOut,
+                        hapticFeedbackTypes: HapticFeedbackTypes.vibrate,
+                        pastedTextStyle: TextStyle(
+                          color: Colors.green.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        length: 5,
+                        obscureText: true,
+                        obscuringCharacter: '*',
+                        blinkWhenObscuring: true,
+                        animationType: AnimationType.scale,
+                        validator: (v) {
+                          if (v!.length < 3) {
+                            return "Please input OTP Code";
+                          } else {
+                            return null;
+                          }
+                        },
+                        pinTheme: PinTheme(
+                          shape: PinCodeFieldShape.underline,
+                          // borderRadius: BorderRadius.circular(5),
+                          fieldHeight: 50,
+                          fieldWidth: 40,
+                          selectedColor: GlobalVariables.buttonColorGreen,
+                          activeFillColor: Colors.white,
+                          activeColor: GlobalVariables.buttonColorGreen,
+                          inactiveColor: GlobalVariables.buttonColorBlack.withOpacity(0.5)
+                        ),
+                        cursorColor: Colors.black.withOpacity(0.5),
+                        animationDuration: const Duration(milliseconds: 300),
+                        // enableActiveFill: true,
+                        errorAnimationController: errorController,
+                        controller: otpController,
+                        keyboardType: TextInputType.number,
+                        boxShadows: const [
+                          BoxShadow(
+                            offset: Offset(0, 1),
+                            color: Colors.black12,
+                            blurRadius: 10,
+                          )
+                        ],
+                        onCompleted: (v) {
+                          Get.offAll(() => const MainPage());
+                          debugPrint("Completed");
+                        },
+                        onChanged: (value) {
+                          debugPrint(value);
+                          setState(() {
+                            currentText = value;
+                          });
+                        },
+                        beforeTextPaste: (text) {
+                          debugPrint("Allowing to paste $text");
+                          return true;
+                        },
+                      ),
                     ),
                   ),
-                  
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Didn't receive OTP? ", style: TextStyle(fontSize: 15, color: GlobalVariables.buttonColorBlack.withOpacity(0.6))),
-                        enableResend ? 
+                        _current == 0 ? 
                          TextButton(
-                          onPressed: (){},
+                          onPressed: (){
+                            startTimer();
+                          },
                           child: const Text("Resend", style: TextStyle(fontSize: 15, color: GlobalVariables.buttonColorGreen, fontWeight: FontWeight.bold))
-                        ) : Text(formattedTime(timeInSecond: secondsRemaining),
+                        ) : Text(formattedTime(timeInSecond: _current),
                         style: const TextStyle(fontWeight: FontWeight.normal),
                       ) 
                       ],
@@ -169,27 +214,25 @@ class _OTPPageState extends State<OTPPage> {
     );
   }
 
-   void resendCode() {
-    //other code here
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (secondsRemaining != 0) {
-        setState(() {
-          secondsRemaining--;
-        });
-      } else {
-        setState(() {
-          enableResend = true;
-        });
+  int start = 10;
+  int _current = 10;
+
+  void startTimer() {
+    CountdownTimer countDownTimer = CountdownTimer(
+      Duration(seconds: start),
+      const Duration(seconds: 1),
+    );
+
+    var sub = countDownTimer.listen(null);
+    sub.onData((duration) {
+      if(mounted){
+        setState(() { _current = start - duration.elapsed.inSeconds; });
       }
     });
-    setState((){
-      enableResend = false;
+
+    sub.onDone(() {
+      print("Done");
+      sub.cancel();
     });
-  }  
-  
-  @override
-  dispose(){
-    timer?.cancel();
-    super.dispose();
   }
 }
