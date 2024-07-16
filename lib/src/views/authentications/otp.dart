@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:perfume/src/components/global_variable.dart';
 import 'package:perfume/src/views/dashboards/mainpage.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -77,7 +79,7 @@ class _OTPPageState extends State<OTPPage> {
                             height: MediaQuery.of(context).size.height / 3,
                             width: MediaQuery.of(context).size.width,
                             child: Image.asset(
-                              'assets/images/signup-image.jpg',
+                              'assets/images/3.jpg',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -92,15 +94,15 @@ class _OTPPageState extends State<OTPPage> {
                             icon: const Icon(Icons.arrow_back_ios_new_rounded, color: GlobalVariables.buttonColorWhite, size: 22,))
                         ),
                         const Positioned(
-                          bottom: 50,
+                          bottom: 10,
                           left: 0,
                           right: 0,
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                Text("Best Perfume in Indonesia", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.normal, fontSize: 20)), 
-                                Text("Welcome to Enela", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.bold, fontSize: 30)),
+                                Text("Selamat datang di nyewa.id", textAlign: TextAlign.center, style: TextStyle(color: Colors.black87, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.bold, fontSize: 25)),
+                                Text("Platform sewa jasa apapun", textAlign: TextAlign.center, style: TextStyle(color: Colors.black87, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.normal, fontSize: 17)),
                               ],
                             ),
                           ),
@@ -111,13 +113,19 @@ class _OTPPageState extends State<OTPPage> {
                   // Center(child: Image.asset('assets/images/otp_image.png')),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                    child: Text("Enter Verification Code", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                    child: Text("Verifikasi Kode OTP", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                    child: Text("We have sent a verification code to the WhatsApp number ${widget.phone ?? 'Unknown Number'}.", style: const TextStyle(fontSize: 15),),
-                  ), 
-                  const SizedBox(height: 20),
+                    child: Column(
+                      children: [
+                        Text("Kami telah mengiirimkan kode OTP ke nomor WhatsApp ${widget.phone ?? '+62'}, mohon untuk dicek kembali", style: const TextStyle(fontSize: 15),),
+                        TextButton.icon(
+                          icon: Icon(Iconsax.message_2_outline, size: 18),
+                          onPressed: (){}, label: const Text("Kirim OTP melalui email?", style: TextStyle(fontWeight: FontWeight.bold),))
+                      ],
+                    ),
+                  ),
                   Form(
                     key: formKey,
                     child: Padding(
@@ -191,13 +199,13 @@ class _OTPPageState extends State<OTPPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Didn't receive OTP? ", style: TextStyle(fontSize: 15, color: GlobalVariables.buttonColorBlack.withOpacity(0.6))),
+                        Text("Tidak menerima OTP? ", style: TextStyle(fontSize: 15, color: GlobalVariables.buttonColorBlack.withOpacity(0.6))),
                         _current == 0 ? 
                          TextButton(
                           onPressed: (){
                             startTimer();
                           },
-                          child: const Text("Resend", style: TextStyle(fontSize: 15, color: GlobalVariables.buttonColorGreen, fontWeight: FontWeight.bold))
+                          child: const Text("Kirim Ulang", style: TextStyle(fontSize: 15, color: GlobalVariables.buttonColorGreen, fontWeight: FontWeight.bold))
                         ) : Text(formattedTime(timeInSecond: _current),
                         style: const TextStyle(fontWeight: FontWeight.normal),
                       ) 
@@ -214,8 +222,8 @@ class _OTPPageState extends State<OTPPage> {
     );
   }
 
-  int start = 10;
-  int _current = 10;
+  int start = 60;
+  int _current = 60;
 
   void startTimer() {
     CountdownTimer countDownTimer = CountdownTimer(

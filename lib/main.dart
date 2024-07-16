@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       defaultTransition: Transition.cupertino,
       debugShowCheckedModeBanner: false,
-      title: 'Enela',
+      title: 'sewa.id',
       theme: ThemeData(
         bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.black.withOpacity(0)),
-        primaryColor: const Color.fromRGBO(83, 196, 146, 1),
+        primaryColor: const Color.fromRGBO(106, 101, 216, 1),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),

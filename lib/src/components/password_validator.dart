@@ -49,7 +49,7 @@ class Roweliminateonenum extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        const Text("At least one digit", style: TextStyle(color: Colors.black45),)
+        const Text("Minimal terdapat 1 angka", style: TextStyle(color: Colors.black45),)
       ],
     );
   }
@@ -88,7 +88,7 @@ class Roweliminatelowup extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        const Text("At least one uppercase letter", style: TextStyle(color: Colors.black45))
+        const Text("Minimal terdapat huruf kapital", style: TextStyle(color: Colors.black45))
       ],
     );
   }
@@ -128,7 +128,7 @@ class Roweliminatenumber extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        const Text("At least 8 characters", style: TextStyle(color: Colors.black45))
+        const Text("Minimal 8 karakter", style: TextStyle(color: Colors.black45))
       ],
     );
   }
