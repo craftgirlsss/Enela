@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:perfume/src/components/global_variable.dart';
 import 'package:perfume/src/views/dashboards/home/index.dart';
+import 'package:perfume/src/views/dashboards/settings/index.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -43,7 +44,7 @@ class _MainPageState extends State<MainPage> {
                   child: Opacity(
                     opacity: 0.8,
                     child: NavigationBar(
-                      backgroundColor: GlobalVariables.buttonColorGreen.withOpacity(0.8),
+                      backgroundColor: GlobalVariables.buttonColorGreen,
                       elevation: 0,
                       height: 55,
                       surfaceTintColor: GlobalVariables.buttonColorGreen,
@@ -64,24 +65,20 @@ class _MainPageState extends State<MainPage> {
                       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
                       destinations: const <Widget>[
                         NavigationDestination(
-                          icon: Icon(Iconsax.home_1_outline),
+                          icon: Icon(Iconsax.home_1_outline, color: Colors.white),
                           label: 'Home',
                         ),
                         NavigationDestination(
-                          icon: Icon(Iconsax.search_status_1_outline),
+                          icon: Icon(Iconsax.task_square_outline, color: Colors.white),
                           label: 'Categories',
                         ),
                         NavigationDestination(
-                          icon: Badge(child: Icon(Iconsax.bag_2_outline)),
-                          label: 'Shop',
-                        ),
-                        NavigationDestination(
-                          icon: Badge(child: Icon(Iconsax.heart_outline),
+                          icon: Badge(child: Icon(Iconsax.clock_outline, color: Colors.white),
                           ),
                           label: 'Favorit',
                         ),
                         NavigationDestination(
-                          icon: Icon(Iconsax.profile_2user_outline),
+                          icon: Icon(Iconsax.profile_circle_outline, color: Colors.white),
                           label: 'Profile',
                         ),
                       ],
@@ -119,32 +116,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
             ),
-        
-            const Card(
-              shadowColor: Colors.white,
-              margin: EdgeInsets.all(8.0),
-              child: SizedBox.expand(
-                child: Center(
-                  child: Text(
-                    'Favorit',
-                    style: TextStyle()
-                  ),
-                ),
-              ),
-            ),
-        
-            const Card(
-              shadowColor: Colors.white,
-              margin: EdgeInsets.all(8.0),
-              child: SizedBox.expand(
-                child: Center(
-                  child: Text(
-                    'Setting',
-                    style: TextStyle()
-                  ),
-                ),
-              ),
-            ),
+            const ProfileTab()
           ][currentPageIndex],
         ),
       ],

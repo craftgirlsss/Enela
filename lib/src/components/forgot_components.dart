@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'global_variable.dart';
 
 class ForgotComponents extends StatefulWidget {
@@ -20,6 +21,7 @@ class _ForgotComponentsState extends State<ForgotComponents> {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
+              backgroundColor: Colors.white,
               builder: (context) => Padding(
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom, left: 20, right: 20, top: 20),
                 child: Column(
@@ -40,8 +42,8 @@ class _ForgotComponentsState extends State<ForgotComponents> {
                               ),
                             )
                           ),
-                          const Text('Oh no!,\ni\'m forgot password', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, fontFamily: "SF-PRO-Bold")),
-                          const Text('Please type your email address where registered in this platform', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal)),
+                          const Text('Aduhhh!!!,\ni\'m lupa kata sandi nih', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, fontFamily: "SF-PRO-Bold")),
+                          const Text('Mohon input alamat email yang telah terdaftar di platform nyewa.id untuk dapat merubah kata sandi', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal)),
                         ],
                       ),
                     ),
@@ -52,11 +54,11 @@ class _ForgotComponentsState extends State<ForgotComponents> {
                         contentPadding: const EdgeInsets.only(top: 15),
                         border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                         hintText: 'Alamat Email',
-                        prefixIcon: const Icon(Icons.email),
+                        prefixIcon: const Icon(Iconsax.message_2_outline, color: GlobalVariables.buttonColorGreen),
                         suffixIcon: InkWell(
                           borderRadius: BorderRadius.circular(30),
                           onTap: (){},
-                          child: Icon(Icons.send, color: Colors.blue.shade600,),
+                          child: Icon(Iconsax.send_1_outline, color: GlobalVariables.buttonColorGreen,),
                         )
                       ),
                       autofocus: false,

@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ScrollController scrollController = ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
   PageController pageController = PageController(initialPage: 0);
-  List imageName = ['background.jpg','logo-splash.png','signup-image.jpg',];
+  List imageName = ['1.jpg','2.jpg','3.jpg', '4.jpg'];
   int activePage = 0;
   Timer? timer;
 
@@ -30,13 +30,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    startTimer();
+    // startTimer();
   }
 
   @override
   void dispose() {
     super.dispose();
-    timer?.cancel();
+    // timer?.cancel();
   }
 
   @override
@@ -108,7 +108,19 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            searchBar()
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20),
+              child: SearchBar(
+                onTap: (){},
+                elevation: const WidgetStatePropertyAll(20),
+                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                padding: const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 16.0)),
+                leading: const Icon(Iconsax.search_normal_1_outline),
+                hintText: "Cari layanan terdekat",
+                trailing: const [Icon(Icons.place_outlined)],
+              ),
+            )
+            // searchBar()
           ],
         )
       ),
