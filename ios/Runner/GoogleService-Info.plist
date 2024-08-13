@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>127506683457-9hvnajvkjiqalld8io96ibhiikbmt77m.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.127506683457-9hvnajvkjiqalld8io96ibhiikbmt77m</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCynbup8fD4TCKSRpYmUWPpH1qQNl73njE</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.enela.app</string>
+	<string>com.example.perfume</string>
 	<key>PROJECT_ID</key>
 	<string>enela-3d7a3</string>
 	<key>STORAGE_BUCKET</key>

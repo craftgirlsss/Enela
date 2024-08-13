@@ -4,7 +4,8 @@ import 'package:perfume/src/components/global_variable.dart';
 
 class InputTextEmail extends StatefulWidget {
   final TextEditingController controller;
-  const InputTextEmail({super.key, required this.controller});
+  final bool? readOnly;
+  const InputTextEmail({super.key, required this.controller, this.readOnly});
 
   @override
   State<InputTextEmail> createState() => _InputTextEmailState();
@@ -30,13 +31,14 @@ class _InputTextEmailState extends State<InputTextEmail> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         controller: widget.controller,
+        readOnly: widget.readOnly ?? false,
         onChanged: (value) {
           validateEmailBool(value: value);
         },
         decoration: InputDecoration(
-          prefixIcon: Padding(
+          prefixIcon: const Padding(
             padding: EdgeInsets.only(left: 8.0),
-            child: Icon(Iconsax.message_2_outline, color: GlobalVariables.buttonColorGreen),
+            child: Icon(Iconsax.device_message_outline, color: GlobalVariables.buttonColorGreen),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           hintText: "Alamat Email",

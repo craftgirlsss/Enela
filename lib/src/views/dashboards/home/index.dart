@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisSpacing: 8.0, // spacing between rows
                       crossAxisSpacing: 8.0, // spacing between columns
                       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 100), // padding around the grid // total number of items
-                      children: List.generate(5, (index) {
+                      children: List.generate(imageName.length, (index) {
                         return Container(
                           height: 200,
                           decoration: BoxDecoration(
@@ -93,13 +93,44 @@ class _HomePageState extends State<HomePage> {
                                 offset: Offset(0, 0),
                                 blurRadius: 10
                               ),
-                            ]
+                            ],
+                            image: DecorationImage(image: AssetImage('assets/images/${imageName[index]}'), fit: BoxFit.cover)
                           ),
-                          child: Center(
-                            child: Text(
-                              "Index $index",
-                              style: TextStyle(fontSize: 18.0, color: Colors.black),
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    height: 25,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomLeft: Radius.circular(5))
+                                    ),
+                                    child: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Iconsax.star_bold, size: 17, color: Colors.orangeAccent),
+                                        Text("Populer"),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))
+                                ),
+                                child: const Text("Hello World")
+                              )
+                            ],
                           ),
                         ); 
                       },)
@@ -116,51 +147,13 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: const WidgetStatePropertyAll(Colors.white),
                 padding: const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 16.0)),
                 leading: const Icon(Iconsax.search_normal_1_outline),
-                hintText: "Cari layanan terdekat",
+                hintText: "Cari layanan jasa terdekat",
                 trailing: const [Icon(Icons.place_outlined)],
               ),
             )
             // searchBar()
           ],
         )
-      ),
-    );
-  }
-
-  Widget searchBar(){
-    return Positioned(
-      top: 45,
-      right: 15,
-      left: 15,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 20,
-              color: Colors.black26,
-              offset: Offset(0, 0)
-            )
-          ]
-        ),
-        child: Row(
-          children: <Widget>[
-            IconButton(
-              splashColor: Colors.grey,
-              icon: const Icon(Iconsax.search_normal_1_outline),
-              onPressed: () {},
-            ),
-            const Expanded(
-              child: TextField(
-                cursorColor: Colors.black,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.go,
-                decoration: InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.symmetric(horizontal: 15), hintText: "Search..."),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -235,28 +228,16 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        Positioned(
-          bottom: 0,
+        const Positioned(
+          bottom: 10,
           left: 0,
           right: 0,
           child: Padding(
             padding: const EdgeInsets.all(18.0),
             child: Column(
               children: [
-                const Text("Best Perfume in Indonesia", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.normal, fontSize: 20)), 
-                const Text("Welcome to Enela", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.bold, fontSize: 30)),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: GlobalVariables.buttonColorGreen
-                    ),
-                    onPressed: (){
-
-                    }, 
-                  child: const Text("Shop Now", style: TextStyle(color: GlobalVariables.textColorWhite))),
-                ),
-
+                const Text("Banyak layanan jasa yang tersedia", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.normal, fontSize: 20)),
+                const Text("Mudah untuk menyewa", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontFamily: "SF-Pro-Bold", fontWeight: FontWeight.bold, fontSize: 30)),
               ],
             ),
           ),

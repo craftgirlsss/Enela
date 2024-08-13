@@ -4,8 +4,10 @@ import 'package:perfume/src/components/global_variable.dart';
 class InputTextAnyText extends StatefulWidget {
   final TextEditingController controller;
   final IconData? icon;
+  final bool? readOnly;
+  final Function()? onPressed;
   final String? hintText;
-  const InputTextAnyText({super.key, required this.controller, this.hintText, this.icon});
+  const InputTextAnyText({super.key, required this.controller, this.hintText, this.icon, this.readOnly, this.onPressed});
 
   @override
   State<InputTextAnyText> createState() => _InputTextAnyTextState();
@@ -18,17 +20,19 @@ class _InputTextAnyTextState extends State<InputTextAnyText> {
     return Container(
       margin: const EdgeInsets.only(left: 15, right: 15, bottom: 0),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black12,
-                offset: Offset(0, 2),
-                blurRadius: 20
-            )
-          ]
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(0, 2),
+            blurRadius: 20
+          )
+        ]
       ),
       child: TextFormField(
+        readOnly: widget.readOnly ?? false,
+        onTap: widget.readOnly == true ? widget.onPressed : null,
         controller: widget.controller,
         keyboardType: TextInputType.name,
         decoration: InputDecoration(

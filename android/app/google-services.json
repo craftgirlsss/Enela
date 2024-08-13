@@ -12,7 +12,20 @@
           "package_name": "com.enela.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "127506683457-c70bnu1gt0tm2vdmqv7c6p6m5qr8e9ru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enela.app",
+            "certificate_hash": "faf8d192061e9f2481668c7a12d5d7ed5cb60689"
+          }
+        },
+        {
+          "client_id": "127506683457-f3d8siqdltiafq950s3j9dvvij9abq89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC6nUTW8V3XSc72Mrf26DTqibEN0YJFjAg"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127506683457-f3d8siqdltiafq950s3j9dvvij9abq89.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127506683457-9hvnajvkjiqalld8io96ibhiikbmt77m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.perfume"
+              }
+            }
+          ]
         }
       }
     }

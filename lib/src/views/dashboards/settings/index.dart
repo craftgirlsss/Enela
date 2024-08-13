@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:perfume/src/views/dashboards/settings/edit_profile.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -16,7 +18,9 @@ class _ProfileTabState extends State<ProfileTab> {
         title: const Text("Profile", style: TextStyle(fontWeight: FontWeight.bold),),
         actions: [
           TextButton.icon(
-            onPressed: (){},
+            onPressed: (){
+              Get.to(() => const EditProfile());
+            },
             label: const Text("Edit", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
             icon: const Icon(Iconsax.edit_2_outline, size: 20,))
         ],
@@ -74,6 +78,12 @@ class _ProfileTabState extends State<ProfileTab> {
               onTap: (){},
               leading: const Icon(Iconsax.messages_2_outline),
               title: const Text("Chat Support", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+              trailing: const Icon(Iconsax.arrow_circle_right_outline),
+            ),
+            ListTile(
+              onTap: (){},
+              leading: const Icon(Iconsax.profile_2user_outline),
+              title: const Text("Gabung Jadi Mitra", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
               trailing: const Icon(Iconsax.arrow_circle_right_outline),
             ),
             ListTile(

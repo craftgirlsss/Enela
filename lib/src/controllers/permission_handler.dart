@@ -28,6 +28,15 @@ permissionServiceCall(context) async {
     print(permissionStatusPhotos);
   }
 
+  final permissionLocation = await Permission.location.status;
+  if (permissionLocation.isDenied) {
+    await Permission.location.request();
+  } else if (permissionLocation.isPermanentlyDenied) {
+    await openAppSettings();
+  } else {
+    print(permissionLocation);
+  }
+
   // var status = await Permission.manageExternalStorage.request();
   // if (status.isDenied) {
   //   await Permission.photos.request();
